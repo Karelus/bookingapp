@@ -1,1 +1,5 @@
-School project for sovellusohjelmointi
+School project for sovellusohjelmointi - Author: Karel Haapasalo
+
+This is a webapp for rating and reviewing movies
+
+Developed with Python, Flask and PostgreSQL
