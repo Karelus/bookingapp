@@ -1,3 +1,5 @@
+
+"""
 from extensions import db
 
 
@@ -23,3 +25,39 @@ class Movie(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
+"""
+
+movie_list = []
+
+
+def get_last_id():
+    if movie_list:
+        last_movie = movie_list[-1]
+    else:
+        return 1
+    return last_movie.id + 1
+
+
+class Movie:
+    def __init__(self, name, year, rating, description, director, duration, age_rating):
+        self.id = get_last_id()
+        self.name = name
+        self.year = year
+        self.rating = rating
+        self.description = description
+        self.director = director
+        self.duration = duration
+        self.age_rating = age_rating
+
+    @property
+    def data(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'year': self.year,
+            'rating': self.rating,
+            'description': self.description,
+            'director': self.director,
+            'duration': self.duration,
+            'age_rating': self.age_rating
+        }

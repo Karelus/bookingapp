@@ -1,7 +1,12 @@
-from flask import Flask, jsonify, request
-from http import HTTPStatus
+from flask import Flask
+from flask_restful import Api
+
+from resources.review import ReviewListResource, ReviewResource, ReviewPublishResource
+from resources.movie import MovieListResource, MovieResource
+
 
 app = Flask(__name__)
+api = Api(app)
 
 reviews = [
     {
@@ -29,7 +34,18 @@ movies = [
     }
 ]
 
+api.add_resource(ReviewListResource, '/reviews')
+api.add_resource(ReviewResource, '/reviews/<int:review_id>')
+api.add_resource(ReviewPublishResource, '/reviews/<int:review_id>/publish')
 
+api.add_resource(MovieListResource, '/movies')
+api.add_resource(MovieResource, '/movies/<int:movie_id>')
+
+
+if __name__ == "__main__":
+    app.run(port=5000, debug=True)
+
+"""
 # get methods
 @app.route('/reviews', methods=['GET'])
 def get_reviews():
@@ -98,7 +114,4 @@ def update_review(review_id):
     )
 
     return jsonify(review)
-
-
-if __name__ == "__main__":
-    app.run()
+"""

@@ -39,6 +39,7 @@ class Review:
         self.movie_id = movie_id
         self.author = author
         self.content = content
+        self.is_publish = False
 
     @property
     def data(self):
