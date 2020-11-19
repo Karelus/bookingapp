@@ -3,10 +3,11 @@ from flask_migrate import Migrate
 from flask_restful import Api
 
 from Config import Config
-from extensions import db
-from resources.user import UserListResource
+from extensions import db, jwt
+from resources.user import UserListResource, UserResource, MeResource, AdminResource
 from resources.review import ReviewListResource, ReviewResource, ReviewPublishResource
 from resources.movie import MovieListResource, MovieResource
+from resources.token import TokenResource
 
 
 def create_app():
@@ -22,12 +23,17 @@ def create_app():
 def register_extensions(app):
     db.init_app(app)
     migrate = Migrate(app, db)
+    jwt.init_app(app)
 
 
 def register_resources(app):
     api = Api(app)
 
     api.add_resource(UserListResource, '/users')
+    api.add_resource(UserResource, '/users/<string:username>')
+    api.add_resource(MeResource, '/me')
+    api.add_resource(TokenResource, '/token')
+    api.add_resource(AdminResource, '/admin')
 
     api.add_resource(ReviewListResource, '/reviews')
     api.add_resource(ReviewResource, '/reviews/<int:review_id>')
@@ -35,33 +41,6 @@ def register_resources(app):
 
     api.add_resource(MovieListResource, '/movies')
     api.add_resource(MovieResource, '/movies/<int:movie_id>')
-
-
-reviews = [
-    {
-        'id': 1,
-        'author': 'Karel',
-        'content': 'This was a very good movie.'
-    },
-    {
-        'id': 2,
-        'author': 'Kappe',
-        'content': 'Not that good tbh.'
-    }
-]
-
-movies = [
-    {
-        'id': 1,
-        'name': 'Matrix',
-        'description': 'Guy takes a red pill.'
-    },
-    {
-        'id': 2,
-        'name': 'Fight Club',
-        'description': 'Guy establishes an underground fight club.'
-    }
-]
 
 
 if __name__ == "__main__":

@@ -1,14 +1,5 @@
 from extensions import db
 
-movie_list = []
-
-def get_last_id():
-    if movie_list:
-        last_movie = movie_list[-1]
-    else:
-        return 1
-    return last_movie.id + 1
-
 
 # for making the movie table in database
 class Movie(db.Model):
@@ -25,10 +16,34 @@ class Movie(db.Model):
     added_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now())
     updated_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now())
 
+    def data(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'year': self.year,
+            'rating': self.rating,
+            'description': self.description,
+            'director': self.director,
+            'duration': self.duration,
+            'age_rating': self.age_rating
+        }
+
+    @classmethod
+    def get_all_movies(cls):
+        return cls.query.all()
+
     @classmethod
     def get_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
 
+    @classmethod
+    def get_by_id(cls, movie_id):
+        return cls.query.filter_by(id=movie_id).first()
+
     def save(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
         db.session.commit()
