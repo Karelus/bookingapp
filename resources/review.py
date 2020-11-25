@@ -4,6 +4,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required, jwt_optional
 from http import HTTPStatus
 
 from models.review import Review
+from models.movie import Movie
 
 
 class ReviewListResource(Resource):
