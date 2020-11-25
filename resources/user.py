@@ -8,6 +8,7 @@ from models.user import User
 
 
 class UserListResource(Resource):
+    # for creating an user, password is hashed to the database
     def post(self):
         json_data = request.get_json()
 
@@ -42,6 +43,8 @@ class UserListResource(Resource):
 
 class UserResource(Resource):
 
+    # for getting on info, shows also email if logged in
+    # and is_admin if user is admin
     @jwt_optional
     def get(self, username):
 
@@ -67,6 +70,25 @@ class UserResource(Resource):
             }
 
         return data, HTTPStatus.OK
+
+    # for user deletion, only admin
+    @jwt_required
+    def delete(self, username):
+
+        identity = get_jwt_identity()
+        current_user = User.get_by_id(identity)
+
+        if not current_user.is_admin:
+            return {'message': 'Not authorized'}, HTTPStatus.UNAUTHORIZED
+
+        user = User.get_by_username(username=username)
+
+        if User is None:
+            return {'message': 'user not found'}, HTTPStatus.NOT_FOUND
+
+        user.delete()
+
+        return {'message': 'user successfully deleted!'}, HTTPStatus.OK
 
 
 # for getting own information when logged in
