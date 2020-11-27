@@ -16,11 +16,8 @@ class TokenResource(Resource):
 
         user = User.get_by_email(email=email)
 
-        if not User:
-            return {'message': 'email is incorrent'}, HTTPStatus.UNAUTHORIZED
-
-        if not check_password(password, user.password):
-            return {'message': 'password is incorrect'}, HTTPStatus.UNAUTHORIZED
+        if not user or not check_password(password, user.password):
+            return {'message': 'email or password is incorrect'}, HTTPStatus.UNAUTHORIZED
 
         access_token = create_access_token(identity=user.id)
 

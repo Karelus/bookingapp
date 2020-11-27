@@ -28,6 +28,7 @@ class ReviewListResource(Resource):
         json_data = request.get_json()
         current_user = get_jwt_identity()
         review = Review(movie_id=json_data['movie_id'],
+                        movie_name=json_data['movie_name'],
                         content=json_data['content'],
                         author_id=current_user)
 
@@ -65,6 +66,7 @@ class ReviewResource(Resource):
 
         review.content = json_data['content']
         review.movie_id = json_data['movie_id']
+        review.movie_name = json_data['movie_name']
 
         review.save()
 
@@ -128,3 +130,21 @@ class ReviewPublishResource(Resource):
         review.save()
 
         return {'message': 'review deleted'}, HTTPStatus.OK
+
+
+# for getting all reviews of a specific movie
+class ReviewResourceByMovie(Resource):
+    @jwt_optional
+    def get(self, movie_id):
+
+        data = []
+
+        reviews = Review.get_all_published()
+        print(reviews)
+
+        for review in reviews:
+            if review.movie_id == movie_id:
+                print('got here')
+                data.append(review.data())
+
+        return {'data': data}, HTTPStatus.OK

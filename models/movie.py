@@ -1,4 +1,5 @@
 from extensions import db
+from sqlalchemy.dialects.postgresql import ARRAY
 
 
 # for making the movie table in database
@@ -8,7 +9,7 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     year = db.Column(db.Integer)
-    rating = db.Column(db.Float)
+    rating = db.Column('rating_array', ARRAY(db.Float))
     description = db.Column(db.String(1000))
     director = db.Column(db.String(50), nullable=False)
     duration = db.Column(db.Integer, nullable=False)

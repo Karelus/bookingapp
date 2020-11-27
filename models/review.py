@@ -6,6 +6,7 @@ class Review(db.Model):
     __tablename__ = 'review'
 
     id = db.Column(db.Integer, primary_key=True)
+    movie_name = db.Column(db.String(200))
     content = db.Column(db.String(1000))
     added_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now())
     updated_at = db.Column(db.DateTime(), nullable=False, server_default=db.func.now())
@@ -17,6 +18,7 @@ class Review(db.Model):
     def data(self):
         return {
             'id': self.id,
+            'movie_name': self.movie_name,
             'content': self.content,
             'movie_id': self.movie_id,
             'author_id': self.author_id
