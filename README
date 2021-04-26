@@ -3,3 +3,5 @@ API and model for rating and reviewing movies without the graphical UI.
 School project for sovellusohjelmointi - Author: Karel Haapasalo
 
 Developed with Python, Flask and PostgreSQL
+
+Also Postman or similar application is needed to use the API, since no UI is yet created
